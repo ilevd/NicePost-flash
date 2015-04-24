@@ -1,8 +1,12 @@
-# NicePost
+﻿# NicePost
 
 News app for vk.com written in Flex.
-For now project is rewrite to Elm (elm-lang.org).
-You can view app here: vk.com/nicepost
+
+For now project is rewrite to Elm (http://elm-lang.org).
+
+New repo: https://github.com/ilevd/NicePost-elm
+
+You can view app here: http://vk.com/nicepost
 
 
 ## License
