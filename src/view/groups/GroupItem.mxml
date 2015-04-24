@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+                   xmlns:s="library://ns.adobe.com/flex/spark"
+                   rollOver="colorEffect1.play([m_BorderContainer])"
+                   rollOut="colorEffect2.play([m_BorderContainer])"
+                   click="click();"
+                   buttonMode="true" useHandCursor="true" mouseChildren="false"
+                   borderVisible="false"
+                   height="60"
+
+        >
+    <!-- To change this template use File | Settings | File Templates. -->
+
+
+    <fx:Declarations>
+        <!-- Place non-visual elements (e.g., services, value objects) here -->
+        <s:AnimateColor id="colorEffect1"
+                        colorPropertyName="backgroundColor"
+                        colorFrom="0xFFFFFF"
+                        colorTo="0xe1edff"
+                        repeatBehavior="reverse"
+                        repeatCount="1"
+                        duration="100"/>
+        <s:AnimateColor id="colorEffect2"
+                        colorPropertyName="backgroundColor"
+                        colorTo="0xFFFFFF"
+                        colorFrom="0xe1edff"
+                        repeatBehavior="reverse"
+                        repeatCount="1"
+                        duration="100"/>
+    </fx:Declarations>
+
+    <s:layout>
+        <s:VerticalLayout gap="0"/>
+    </s:layout>
+
+
+    <s:Line width="100%" displayObjectSharingMode="usesSharedObject">
+        <s:stroke>
+            <s:SolidColorStroke color="0xEEEEEE"/>
+        </s:stroke>
+    </s:Line>
+
+    <s:BorderContainer id="m_BorderContainer" borderVisible="false" height="60">
+        <s:layout>
+            <s:HorizontalLayout verticalAlign="middle"/>
+        </s:layout>
+
+        <s:Image id="m_Img" width="50" height="50"/>
+        <s:Label id="m_Text" color="0x4c6787" width="100"/>
+
+    </s:BorderContainer>
+
+    <s:Line width="100%" displayObjectSharingMode="usesSharedObject">
+        <s:stroke>
+            <s:SolidColorStroke color="0xEEEEEE"/>
+        </s:stroke>
+    </s:Line>
+
+
+    <fx:Script><![CDATA[
+        import mx.core.FlexGlobals;
+
+        import data.vo.GroupVO;
+
+        private var group:GroupVO;
+
+        public function init(group:GroupVO):void {
+            this.group = group;
+            m_Img.source = group.photo_50;
+            m_Text.text = group.name;
+        }
+
+        private function click():void {
+            trace("GroupItem click: groupID: " + group.id);
+            (FlexGlobals.topLevelApplication as BestPosts).getPosts(group.id);
+        }
+        ]]></fx:Script>
+
+</s:BorderContainer>

@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+               xmlns:s="library://ns.adobe.com/flex/spark"
+               xmlns:groups="view.groups.*"
+               xmlns:posts="view.posts.*" xmlns:view="view.*" xmlns:friends="view.friends.*"
+               xmlns:groupspost="view.groupspost.*" xmlns:menu="view.menu.*" xmlns:info="view.info.*"
+               xmlns:invite="view.invite.*" xmlns:today="view.today.*"
+               width="850" height="740" frameRate="30"
+               backgroundColor="0xf5f5f5"
+               creationComplete="creation();"
+               addedToStage="addedToStage();"
+               rollOver="onOver();" rollOut="onOut();">
+
+    <!--s:BitmapImage fillMode="repeat" source="{ResManager.BACKGROUND}" width="100%" height="100%"/-->
+
+    <fx:Declarations>
+        <friends:FriendsWindow id="m_FriendWindow" visible="false" horizontalCenter="0" verticalCenter="0"/>
+        <groupspost:GroupsWindow id="m_GroupsWindow" visible="false" horizontalCenter="0" verticalCenter="0"/>
+        <view:ImageWindow id="m_ImageWindow" visible="false"/>
+        <invite:InviteWindow id="m_InviteWindow" visible="false"/>
+        <today:TodayWindow id="m_TodayWindow" visible="true"/>
+    </fx:Declarations>
+
+    <menu:Menu id="m_Menu" y="10" x="10"/>
+
+    <info:InfoPanel id="m_InfoPanel" x="815" y="15"/>
+
+    <groups:TopGroupsTable id="m_TopGroupsTable" x="10" y="63"/>
+
+    <posts:Wall id="m_Board" height="610" y="120" x="10"/>
+
+
+    <s:Group id="windowContainer" width="{this.width}" height="{this.height}">
+        <!--friends:FriendsWindow id="m_FriendWindow" visible="false" horizontalCenter="0" verticalCenter="0"/>
+        <groupspost:GroupsWindow id="m_GroupsWindow" visible="false" horizontalCenter="0" verticalCenter="0"/-->
+    </s:Group>
+
+
+
+    <!--groups:GroupsTable id="m_GroupsTable" x="550" y="120"/-->
+
+    <!--invite:InviteLabel left="5" bottom="2"/-->
+    <view:LoadingWindow id="m_LoadingWindow" visible="false"/>
+
+
+    <fx:Style>
+        /*@namespace s "library://ns.adobe.com/flex/spark";
+
+        @font-face {
+            src: url("../media/font5102337.ttf");
+            fontFamily: myFontFamily;
+            embedAsCFF: true;
+        } */
+    </fx:Style>
+
+    <fx:Style source="st.css"/>
+
+    <fx:Script><![CDATA[
+        //0xfbf9f4
+        import commands.GetGroupsCommand;
+        import commands.GetPostsCommand;
+        import commands.GetSelfGroupsCommand;
+        import commands.LeftMenuCommand;
+
+        import data.TopGroups;
+
+        import utils.mousescroll.MouseWheel;
+
+        import vk.IVkFacade;
+        import vk.VkFacade;
+
+        public var flashVars:FlashVarsService;
+        public var vkFacade:IVkFacade;
+
+        private static const MAIN_APP_ID:String = "4260531";
+
+        private function addedToStage():void {
+            this.stage.scaleMode = StageScaleMode.NO_SCALE;
+            Security.loadPolicyFile("http://vk.com/crossdomain.xml");
+            Security.allowDomain("*");
+        }
+
+        private function creation():void {
+            TopGroups.init();
+            MouseWheel.capture();
+            flashVars = new FlashVarsService(this);
+
+            //flashVars.initLocal();
+            flashVars.initVK();
+
+            if (FlashVarsService.API_ID != MAIN_APP_ID) {
+                return;
+            }
+
+            vkFacade = new VkFacade(FlashVarsService.FLASH_VARS);
+            //m_FriendWindow.setFriends(FlashVarsService.FRIENDS);
+            //m_GroupsWindow.setFriends(FlashVarsService.ADMIN_GROUPS);
+            trace("BestPosts init");
+            new GetGroupsCommand().run(TopGroups.getAllGroups());
+            new GetSelfGroupsCommand().run();
+            new GetPostsCommand().run("32015300");
+            new LeftMenuCommand().run();
+            WinManager.$.showTodayWindow();
+        }
+
+
+        protected function onOver(event:MouseEvent = null):void {
+            MouseWheel.capture();
+        }
+
+        protected function onOut(event:MouseEvent = null):void {
+            MouseWheel.release();
+        }
+        ]]></fx:Script>
+
+</s:Application>

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+                   xmlns:s="library://ns.adobe.com/flex/spark"
+                   borderVisible="false"
+                   backgroundAlpha="0">
+    <!-- To change this template use File | Settings | File Templates. -->
+
+
+    <s:HGroup id="m_Box" width="100%" gap="0" horizontalAlign="center"
+              paddingTop="0" paddingBottom="0" paddingLeft="0" paddingRight="0"/>
+
+
+    <fx:Script><![CDATA[
+        import data.vo.GroupVO;
+
+        private static const MAX_GROUPS_COUNT:uint = 16;
+
+        private var cacheGroups:Object = new Object();
+        private var groupsItem:Vector.<TopGroupItem>;
+
+        public function setGroups(groups:Vector.<GroupVO>, selectedID:String):void {
+            m_Box.removeAllElements();
+            groupsItem = new Vector.<TopGroupItem>();
+            for (var i:uint = 0; i < groups.length && i < MAX_GROUPS_COUNT; i++) {
+                var group:TopGroupItem
+                if( cacheGroups[groups[i].id] ){
+                    group = (cacheGroups[groups[i].id] as TopGroupItem);
+                      m_Box.addElement(group);
+                }else{
+                    group = new TopGroupItem();
+                    m_Box.addElement(group);
+                    group.init(groups[i]);
+                    cacheGroups[groups[i].id] = group;
+                }
+                group.deselect();
+                groupsItem.push(group);
+                if (groups[i].id == selectedID) {
+                    group.select();
+                }
+            }
+        }
+
+        public function deselect():void {
+            for (var i:uint = 0; i < groupsItem.length; i++) {
+                var group:TopGroupItem = groupsItem[i];
+                group.deselect();
+            }
+        }
+        ]]></fx:Script>
+
+
+</s:BorderContainer>

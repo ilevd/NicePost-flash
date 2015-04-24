@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
+                   xmlns:s="library://ns.adobe.com/flex/spark"
+        verticalAlign="middle" gap="1">
+    <!-- To change this template use File | Settings | File Templates. -->
+
+
+    <!--s:Image source="{ResManager.PLAY_ICON}" height="8" width="8" smooth="true"/-->
+
+    <s:Label id="nameLabel" color="0x4a6283" width="250" fontSize="12" maxDisplayedLines="1"
+             rollOver="Utils.rollOver(nameLabel);" rollOut="Utils.rollOut(nameLabel)"
+             useHandCursor="true" buttonMode="true" mouseChildren="false"
+             click="click();"/>
+
+
+    <fx:Script><![CDATA[
+        import utils.Utils;
+
+        import data.vo.post.AudioVO;
+        import data.vo.post.PostVO;
+
+        public function setAudio(audio:AudioVO):void {
+            nameLabel.text = audio.artist + " – " + audio.title;
+        }
+
+        private function click():void {
+
+        }
+        ]]></fx:Script>
+
+
+</s:HGroup>

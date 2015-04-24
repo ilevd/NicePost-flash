@@ -1,0 +1,323 @@
+<?xml version="1.0"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+                   xmlns:s="library://ns.adobe.com/flex/spark" xmlns:controller="view.mediator.*"
+                   width="260" minHeight="40"
+                   cornerRadius="5"
+                   borderVisible="true" borderColor="0x777777" borderAlpha="0.2"
+                   backgroundColor="0xFFFFFF" backgroundAlpha="0"
+                   rollOver="rollOver();" rollOut="rollOut();"
+        >
+    <!-- To change this template use File | Settings | File Templates. -->
+
+    <fx:Declarations>
+        <controller:PostMediator id="_postController"/>
+    </fx:Declarations>
+
+
+    <s:backgroundFill>
+        <s:LinearGradient rotation="90">
+            <s:GradientEntry color="0xFFFFFF"/>
+
+            <s:GradientEntry color="0xFFFFFF"/>
+        </s:LinearGradient>
+    </s:backgroundFill>
+
+
+    <!--s:states>
+
+        <s:State name="default"/>
+        <s:State name="text"/>
+        <s:State name="photo"/>
+    </s:states-->
+
+    <!--s:filters>
+        <s:GlowFilter id="m_Filter" color="0x999999" blurX="4" blurY="4"/>
+    </s:filters-->
+
+    <!--s:layout>
+
+        <s:VerticalLayout gap="0"  />
+
+    </s:layout-->
+
+
+    <s:VGroup width="365" id="m_MainBox" gap="10"
+              verticalAlign="middle"
+              paddingLeft="5" paddingRight="5" paddingTop="5" paddingBottom="5">
+        <s:HGroup id="m_PhotoBox" width="250" gap="2" />
+        <s:Label id="m_Text" width="250" fontSize="12"/>
+
+
+        <s:VGroup id="m_AudioBox" width="250" gap="1" click="repostClick();"/>
+        <!--s:VGroup id="m_VideoBox" width="360"/>
+        <s:VGroup id="m_LinkBox" width="360"/-->
+
+
+
+        <s:HGroup id="m_InfoGroup" visible="true" verticalAlign="middle" gap="7" paddingLeft="2"   width="258"  >
+            <s:HGroup gap="2" width="60" verticalAlign="middle" horizontalAlign="left" height="100%">
+                <s:Image source="{ResManager.LIKE_ICON}" width="12" height="12" verticalAlign="top" smooth="true" alpha="0.9"/>
+                <s:Label id="m_LikeLabel" color="0x435977" fontFamily="Tahoma" fontWeight="bold" fontSize="12"
+                         toolTip="лайков"
+                         rollOver="Utils.rollOver(m_LikeLabel);" rollOut="Utils.rollOut(m_LikeLabel)"
+                         useHandCursor="true" buttonMode="true" mouseChildren="false"
+                         click="repostClick();"/>
+                <!--s:Label id="m_ShareLabel" color="0xbababa" fontFamily="Tahoma" fontSize="10"
+                         toolTip="репостов"/-->
+                <!--s:Spacer width="2"/>
+                <s:Image source="{ResManager.SHARE_ICON}" visible="false"/-->
+
+            </s:HGroup>
+
+
+            <s:Label id="m_Go" text="На стену!" color="0x435977" fontSize="11"
+                     rollOver="Utils.rollOver(m_Go);" rollOut="Utils.rollOut(m_Go)"
+                     useHandCursor="true" buttonMode="true" mouseChildren="false"
+                     click="repostClick();" />
+
+            <s:Label id="m_ToFriend" text="Другу!" color="0x435977" fontSize="11"
+                     rollOver="Utils.rollOver(m_ToFriend);" rollOut="Utils.rollOut(m_ToFriend)"
+                     useHandCursor="true" buttonMode="true" mouseChildren="false"
+                     click="repostFriendClick();"/>
+
+            <s:Label id="m_ToGroup" text="В группу!" color="0x435977" fontSize="11"
+                     rollOver="Utils.rollOver(m_ToGroup);" rollOut="Utils.rollOut(m_ToGroup)"
+                     useHandCursor="true" buttonMode="true" mouseChildren="false"
+                     click="repostGroupClick();"/>
+
+
+            <!--s:Button id="m_Go" label="На стену!" skinClass="skins.ChatButtonSkin" color="0x435977" fontSize="12"
+                      buttonMode="true"
+                      click="repostClick();" />
+
+            <s:Button id="m_ToFriend" label="Другу!" skinClass="skins.ChatButtonSkin" color="0x435977" fontSize="12"
+                      buttonMode="true"
+                      click="repostFriendClick();"/>
+
+            <s:Button id="m_ToGroup" label="В группу!" skinClass="skins.ChatButtonSkin" color="0x435977" fontSize="12"
+                      buttonMode="true"
+                      click="repostGroupClick();"/-->
+
+            <!--s:Label id="m_Date" color="0x9ca0a3" fontSize="10" width="100%" textAlign="right" maxDisplayedLines="1"/-->
+            <!--s:Label id="m_DoPost" text="Перейти к записи" color="0x435977" fontSize="11"
+                     rollOver="Utils.rollOver(m_DoPost);" rollOut="Utils.rollOut(m_DoPost)"
+                     useHandCursor="true" buttonMode="true" mouseChildren="false"
+                     click="navigateClick();"/-->
+
+
+        </s:HGroup>
+
+
+    </s:VGroup>
+
+
+
+
+    <fx:Script><![CDATA[
+        import mx.core.FlexGlobals;
+        import mx.core.UIComponent;
+
+        import skins.RoundImageSkin;
+
+        import spark.components.Image;
+
+        import utils.CropImageUtils;
+        import utils.MaskImage;
+        import utils.Utils;
+
+        import data.vo.post.PostVO;
+
+
+        private const MAX_IMAGE:uint = 2;
+
+        private var post:PostVO;
+
+        public function init(post:PostVO):void {
+            post.text = getCorrect(post.text);
+            this.post = post;
+
+            //m_Date.text = Utils.unixTimeToStr(post.date);
+            m_LikeLabel.text = post.likes.count.toString();
+            //m_LikeLabel.toolTip = m_LikeLabel.text + " лайков";
+
+            //m_ShareLabel.text =  "  " + post.reposts.count.toString();
+            //m_ShareLabel.toolTip =  post.reposts.count.toString() + " репостов";
+
+            if (post.text != "") {
+                setText();
+            }
+            if (post.photos.length > 0) {
+                setPhotos(post);
+            }
+            if (post.audios.length > 0) {
+                setAudios(post);
+            }
+            setState(post);
+            /*if(post.audios.length > 0){
+             setAudios(post);
+             }
+             if(post.videos.length > 0){
+             setVideos(post);
+             }
+             if(post.links.length > 0){
+             setLinks(post);
+             } */
+        }
+
+        private static function getCorrect(text:String):String {
+            if ( text.indexOf("top_cards") == -1 &&
+                    text.indexOf("fotomimi") == -1 &&
+                text.indexOf("congratulation_vk") == -1 )
+            {
+                return text;
+            }
+            return ""; //"&#127801;&#127874;  Открытки и многое другое &#128515; vk.com/NicePost &#128515;";
+        }
+
+        private function setText():void {
+            if (post.text.length > 200) {
+                m_Text.text = post.text.substr(0, 100) + "... \n(развернуть)";
+                m_Text.toolTip = "Нажмитре чтобы развернуть";
+                m_Text.useHandCursor = true;
+                m_Text.buttonMode = true;
+                m_Text.addEventListener(MouseEvent.CLICK, onTextClick);
+                m_Text.addEventListener(MouseEvent.ROLL_OVER, onTextRollOver);
+                m_Text.addEventListener(MouseEvent.ROLL_OUT, onTextRollOut);
+            } else {
+                m_Text.text = post.text;
+            }
+        }
+
+        private function onTextClick(e:MouseEvent):void {
+            if (m_Text.text.length < post.text.length) {
+                m_Text.text = post.text;
+                m_Text.toolTip = "Нажмитре чтобы свернуть";
+            } else {
+                m_Text.text = post.text.substr(0, 100) + "... \n(развернуть)";
+                m_Text.toolTip = "Нажмитре чтобы развернуть";
+            }
+        }
+
+        private function onTextRollOver(e:MouseEvent):void {
+            m_Text.setStyle("backgroundColor", 0xF5FAFD);
+        }
+
+        private function onTextRollOut(e:MouseEvent):void {
+            m_Text.setStyle("backgroundColor", 0xFFFFFF);
+        }
+
+        private function setPhotos(post:PostVO):void {
+            if (post.photos.length == 1) {
+                var img:Image = new Image();
+                img.maxWidth = 250;//340;
+                img.smooth = true;
+                img.source = post.photos[0].photo_604;
+                CropImageUtils.scaleImageByWidth(img);
+                m_PhotoBox.addElement(img);
+                img.addEventListener(MouseEvent.CLICK, imageClick, false, 0, true);
+                img.useHandCursor = img.buttonMode = true;
+            }
+            if (post.photos.length == 2) {
+                for (var i:uint = 0; i < 2; i++) {
+                    img = new Image();
+                    img.maxWidth = 120;
+                    img.smooth = true;
+                    img.source = post.photos[i].photo_130;
+                    m_PhotoBox.addElement(img);
+                    img.addEventListener(MouseEvent.CLICK, imageClick, false, 0, true);
+                    img.useHandCursor = img.buttonMode = true;
+                }
+            }
+            if (post.photos.length >= 3) {
+                for (var i:uint = 0; i < 3; i++) {
+                    img = new Image();
+                    img.smooth = true;
+                    //img.minWidth = 75;
+                    img.source = post.photos[i].photo_75;
+                    m_PhotoBox.addElement(img);
+                    img.addEventListener(MouseEvent.CLICK, imageClick, false, 0, true);
+                    img.useHandCursor = img.buttonMode = true;
+                }
+            }
+            if (post.photos.length >= 4) {
+                var m_PhotoBox2:HGroup = new HGroup();
+                m_PhotoBox2.gap = 2;
+                m_MainBox.addElementAt(m_PhotoBox2, 1);
+                for (var i:uint = 3; i < post.photos.length && i < 6; i++) {
+                    img = new Image();
+                    img.smooth = true;
+                    //img.minWidth = 75;
+                    img.source = post.photos[i].photo_75;
+                    m_PhotoBox2.addElement(img);
+                    img.addEventListener(MouseEvent.CLICK, imageClick, false, 0, true);
+                    img.useHandCursor = img.buttonMode = true;
+                }
+            }
+
+        }
+
+
+        private function imageClick(e:MouseEvent):void {
+            trace(Image(e.currentTarget).source);
+            var src:String = (e.currentTarget).source;
+            for (var i:uint; i < post.photos.length; i++) {
+                if (post.photos[i].photo_130 == src || post.photos[i].photo_604 == src ||
+                        post.photos[i].photo_75 == src) {
+                    _postController.imageClick(post.photos[i].photo_604, post, i);
+                    return;
+                }
+            }
+        }
+
+        private function setAudios(post:PostVO):void {
+            for (var i:uint = 0; i < post.audios.length; i++) {
+                var a:AudioItem = new AudioItem();
+                m_AudioBox.addElement(a);
+                a.setAudio(post.audios[i]);
+            }
+        }
+
+        private function setState(post:PostVO):void {
+            if (post.text == "" || post.text.indexOf("NicePost") != -1) {
+                m_MainBox.removeElement(m_Text);
+            }
+            if (post.photos.length == 0) {
+                m_MainBox.removeElement(m_PhotoBox);
+            }
+            if (post.audios.length == 0) {
+                m_MainBox.removeElement(m_AudioBox);
+            }
+        }
+
+
+        private function rollOver():void {
+            //setStyle("borderAlpha", "0.6");
+            //setStyle("borderColor", 0xebecea);
+            //m_InfoGroup.visible = true;
+        }
+
+        private function rollOut():void {
+            //setStyle("borderAlpha", "0.2");
+            //setStyle("borderColor", 0x555555);
+            //m_InfoGroup.visible = false;
+        }
+
+        private function navigateClick():void {
+            _postController.navigateClick(post);
+        }
+
+        public function repostClick():void {
+            _postController.postSelfClick(post);
+        }
+
+        public function repostFriendClick():void {
+            _postController.postFriendClick(post);
+        }
+
+        public function repostGroupClick():void {
+            _postController.postGroupClick(post);
+        }
+        ]]></fx:Script>
+
+
+</s:BorderContainer>

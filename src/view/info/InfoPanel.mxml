@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+          xmlns:s="library://ns.adobe.com/flex/spark">
+
+
+    <fx:Declarations>
+        <s:Scale id="m_ScaleEffect1" scaleXTo="1.1" scaleYTo="1.1" duration="50" autoCenterTransform="true"/>
+        <s:Scale id="m_ScaleEffect2" scaleXTo="1" scaleYTo="1" duration="50" autoCenterTransform="true"/>
+     </fx:Declarations>
+
+
+    <s:Image id="m_InviteImage" source="{ResManager.INVITE_ICON}" x="0"  y="0" width="30" height="32"
+             smooth="true"
+              buttonMode="true"
+             rollOver="m_ScaleEffect1.play([m_InviteImage]);"
+             rollOut="m_ScaleEffect2.play([m_InviteImage]);"
+             toolTip="Рассказать друзьям о классном приложении" click="invite();"/>
+
+    <fx:Script><![CDATA[
+        import mx.core.FlexGlobals;
+
+        import vk.IVkFacade;
+
+        import vk.VkFacade;
+
+
+        private function invite():void{
+            var main:BestPosts = BestPosts(FlexGlobals.topLevelApplication);
+            var vkFacade:IVkFacade = main.vkFacade;
+            vkFacade.inviteFriends();
+        }
+
+        ]]></fx:Script>
+
+
+</s:Group>

@@ -1,0 +1,98 @@
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/mx";
+
+
+s|Button{
+
+}
+
+s|VScrollBar{
+    skinClass: ClassReference("skins.VScrollSkin.ScrollSkin");
+}
+
+s|HScrollBar{
+    skinClass: ClassReference("skins.HScrollSkin.HScrollSkin");
+}
+
+
+s|Label{
+    /*fontFamily: myFontFamily;*/
+    fontFamily: Tahoma;
+}
+
+mx|ToolTip{
+    fontSize: 12;
+
+}
+
+
+.windowStyle{
+    backgroundColor: "0xfdf7e5";
+    cornerRadius: 10;
+    borderColor: "0xdecaa0";
+    borderWeight: 5;
+}
+
+
+.labelTitle{
+    fontFamily: bedrockcFontFamily;
+    fontSize: 20;
+}
+
+
+
+
+/*-------------------------------  RATING ----------------------------------------*/
+.ratingLeftMenuButton{
+    downSkin: Embed("../media/skinBestPosts1.swf", symbol='RatingMenuUp');
+    upSkin:  Embed("../media/skinBestPosts1.swf", symbol='RatingMenuUp');
+    disabledSkin: Embed("../media/skinBestPosts1.swf", symbol='RatingMenuUp');
+
+    overSkin: Embed("../media/skinBestPosts.swf", symbol='RatingMenuUp');
+    selectedUpSkin: Embed("../media/skinBestPosts.swf", symbol='RatingMenuUp');
+    selectedDownSkin: Embed("../media/skinBestPosts.swf", symbol='RatingMenuUp');
+    selectedOverSkin: Embed("../media/skinBestPosts.swf", symbol='RatingMenuUp');
+    selectedDisabledSkin: Embed("../media/skinBestPosts.swf", symbol='RatingMenuUp');
+    color: #333333;
+    textRollOverColor: #333333;
+    textSelectedColor: #333333;
+    fontSize: 12;
+    fontWeight: bold;
+    toggle: true;
+}
+
+.ratingMenuButton{
+    downSkin: Embed("../media/skinBestPosts1.swf", symbol='RatingMenuUp1');
+    upSkin:  Embed("../media/skinBestPosts1.swf", symbol='RatingMenuUp1');
+    disabledSkin: Embed("../media/skinBestPosts.swf", symbol='RatingMenuUp1');
+
+    overSkin: Embed("../media/skinBestPosts.swf", symbol='RatingMenuUp1');
+    selectedUpSkin: Embed("../media/skinBestPosts.swf", symbol='RatingMenuUp1');
+    selectedDownSkin: Embed("../media/skinBestPosts.swf", symbol='RatingMenuUp1');
+    selectedOverSkin: Embed("../media/skinBestPosts.swf", symbol='RatingMenuUp1');
+    selectedDisabledSkin: Embed("../media/skinBestPosts.swf", symbol='RatingMenuUp1');
+    color: #333333;
+    textRollOverColor: #333333;
+    textSelectedColor: #333333;
+    fontSize: 12;
+    fontWeight: bold;
+    toggle: true;
+}
+
+.ratingRightMenuButton{
+    downSkin: Embed("../media/skinBestPosts1.swf", symbol='RatingMenuUp2');
+    upSkin:  Embed("../media/skinBestPosts1.swf", symbol='RatingMenuUp2');
+    disabledSkin: Embed("../media/skinBestPosts1.swf", symbol='RatingMenuUp2');
+
+    overSkin: Embed("../media/skinBestPosts.swf", symbol='RatingMenuUp2');
+    selectedUpSkin: Embed("../media/skinBestPosts.swf", symbol='RatingMenuUp2');
+    selectedDownSkin: Embed("../media/skinBestPosts.swf", symbol='RatingMenuUp2');
+    selectedOverSkin: Embed("../media/skinBestPosts.swf", symbol='RatingMenuUp2');
+    selectedDisabledSkin: Embed("../media/skinBestPosts.swf", symbol='RatingMenuUp2');
+    color: #333333;
+    textRollOverColor: #333333;
+    textSelectedColor: #333333;
+    fontSize: 12;
+    fontWeight: bold;
+    toggle: true;
+}

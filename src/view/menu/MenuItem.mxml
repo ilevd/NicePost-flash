@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+                   xmlns:s="library://ns.adobe.com/flex/spark"
+        borderVisible="false"
+        height="22" minWidth="92"
+        buttonMode="true" useHandCursor="true" mouseChildren="false"
+        rollOut="rollOut();" rollOver="rollOver();">
+    <!-- To change this template use File | Settings | File Templates. -->
+
+    <s:layout>
+        <s:HorizontalLayout paddingLeft="5" paddingRight="5" paddingTop="2" paddingBottom="2"
+                horizontalAlign="center" verticalAlign="middle"/>
+    </s:layout>
+
+    <s:Label id="m_Name" fontSize="12" fontWeight="normal" color="0x777777"/>
+
+    <fx:Script><![CDATA[
+
+        private var index:uint;
+
+        private var isSelect:Boolean = false;
+
+
+        public function  init(name:String, index:uint):void{
+            m_Name.text = name;
+            this.index = index;
+        }
+
+        public function getIndex():uint{
+            return index;
+        }
+
+        private function rollOver():void{
+            setStyle("backgroundColor", 0xE4F1FF);
+        }
+
+        private function rollOut():void{
+            if( isSelect == false){
+                setStyle("backgroundColor", 0xFFFFFF);
+            }
+        }
+
+        public function select():void{
+            isSelect = true;
+            //m_Name.setStyle("color", 0xFFFFFF);
+            setStyle("backgroundColor", 0xE4F1FF);
+        }
+
+        public function deselect():void{
+            isSelect = false;
+            //m_Name.setStyle("color", 0x333333);
+            setStyle("backgroundColor", 0xFFFFFF);
+        }
+
+        ]]></fx:Script>
+
+</s:BorderContainer>

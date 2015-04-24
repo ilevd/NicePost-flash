@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+                   xmlns:s="library://ns.adobe.com/flex/spark"
+                   xmlns:mx="library://ns.adobe.com/flex/mx"
+                   width="100%" height="100%" borderVisible="false"
+                   backgroundColor="0xbababa" backgroundAlpha="0.2"
+                   creationComplete="creation();">
+
+
+
+        <s:Label text="Загрузка..." fontSize="14" color="0x2c2c2c" horizontalCenter="0" verticalCenter="0">
+            <s:filters>
+                <s:GlowFilter color="0xFFFFFF" alpha="1" strength="40"/>
+            </s:filters>
+
+         </s:Label>
+    <!-- To change this template use File | Settings | File Templates. -->
+
+    <fx:Script><![CDATA[
+
+        private var _timer:Timer = new Timer(10000, 1);
+
+        private function creation():void{
+            _timer.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void{
+                hide();
+            });
+        }
+
+        public function show():void{
+            _timer.reset();
+            _timer.start();
+            visible = true;
+
+        }
+
+        public function hide():void{
+            visible = false;
+        }
+
+        ]]></fx:Script>
+
+
+</s:BorderContainer>

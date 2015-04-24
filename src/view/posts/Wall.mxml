@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<s:VGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
+          xmlns:s="library://ns.adobe.com/flex/spark"
+        >
+    <!-- To change this template use File | Settings | File Templates. -->
+
+    <s:Scroller id="m_WallScroller"  height="610"
+                mouseWheelChanging="mouseWheelChange(event);" >
+
+
+        <s:VGroup paddingRight="7">
+
+            <s:HGroup width="100%" height="100%" gap="15" paddingBottom="20">
+
+                <s:VGroup id="m_Box0" width="260" height="100%"
+                          gap="19"
+                          horizontalCenter="0" horizontalAlign="center"
+                          paddingLeft="0" paddingRight="0" paddingBottom="0" paddingTop="0"
+                        />
+                <s:VGroup id="m_Box1" width="260" height="100%"
+                          gap="19"
+                          horizontalCenter="0" horizontalAlign="center"
+                          paddingLeft="0" paddingRight="0" paddingBottom="0" paddingTop="0"
+                        />
+                <s:VGroup id="m_Box2" width="260" height="100%"
+                          gap="19"
+                          horizontalCenter="0" horizontalAlign="center"
+                          paddingLeft="0" paddingRight="0" paddingBottom="0" paddingTop="0"
+                        />
+            </s:HGroup>
+        </s:VGroup>
+
+    </s:Scroller>
+
+    <fx:Script><![CDATA[
+        import mx.events.FlexMouseEvent;
+
+        import data.vo.post.PostVO;
+
+        private static const MAX_POSTS_COUNT:uint = 42;
+        private static const STEP_POSTS_COUNT:uint = 42;
+
+        private var _posts:Vector.<PostVO>;
+        //private var _currentPostIndex:uint = 0;
+
+        public function setPosts(posts:Vector.<PostVO>):void {
+            this._posts = posts;
+            m_WallScroller.verticalScrollBar.value = 0;
+            m_Box0.removeAllElements();
+            m_Box1.removeAllElements();
+            m_Box2.removeAllElements();
+            //_currentPostIndex = 0;
+            addPosts();
+            //addEventListener(Event.ENTER_FRAME, addPosts, false, 0, true);
+        }
+
+        private function addPosts(e:Event = null):void {
+            for (var i:uint = 0, j:uint = 0;
+                 i < _posts.length && j < MAX_POSTS_COUNT /*&& j < _currentPostIndex + STEP_POSTS_COUNT*/; i++)
+            {
+                /*if ((_posts[i].text == "" && _posts[i].photos.length == 0) || _posts[i].videos.length > 0) {
+                    continue;
+                } */
+                if( _posts[i].videos.length == 0 && (_posts[i].text != "" ||_posts[i].photos.length > 0)){
+                    var bm:Post = new Post();
+                    var ost:int = (j++) % 3;
+                    var box:VGroup = ost == 0 ? m_Box0 : (ost == 1 ? m_Box1 : m_Box2);
+                    box.addElement(bm);
+                    bm.init(_posts[i]);
+                }
+            }
+            /*_currentPostIndex = Math.min(_posts.length, MAX_POSTS_COUNT, _currentPostIndex + STEP_POSTS_COUNT);
+            if (_currentPostIndex == MAX_POSTS_COUNT || _currentPostIndex == _posts.length) {
+                removeEventListener(Event.ENTER_FRAME, addPosts)
+            } */
+        }
+
+        private function mouseWheelChange(event:FlexMouseEvent):void {
+            event.preventDefault();
+            m_WallScroller.verticalScrollBar.value -= event.delta * 50;
+            /*if(m_WallScroller.verticalScrollBar.value > m_WallScroller.verticalScrollBar.maximum - 200){
+             addPosts();
+             }
+             trace("Wheel: " + m_WallScroller.verticalScrollBar.value  + "  " + m_WallScroller.verticalScrollBar.maximum);
+             */
+        }
+        ]]></fx:Script>
+
+
+</s:VGroup>

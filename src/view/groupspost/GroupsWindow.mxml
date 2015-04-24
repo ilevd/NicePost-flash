@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+                   xmlns:s="library://ns.adobe.com/flex/spark"
+
+                   cornerRadius="10"
+                   borderVisible="true" borderColor="0x777777" borderAlpha="0.2"
+                   backgroundColor="0xfbf9f4" backgroundAlpha="1"
+        >
+    <!-- To change this template use File | Settings | File Templates. -->
+
+
+    <s:filters>
+        <s:GlowFilter id="m_Filter" color="0x999999" blurX="4" blurY="4"/>
+    </s:filters>
+
+
+    <!--s:layout>
+        <s:VerticalLayout  gap="10"
+                           paddingLeft="15" paddingRight="15" paddingTop="15" paddingBottom="15"
+                           horizontalAlign="center"/>
+    </s:layout-->
+
+    <s:Button id="m_CloseButton" skinClass="skins.CloseButtonSkin" right="10" y="10" click="close();"
+              useHandCursor="true" buttonMode="true" mouseChildren="false"/>
+
+
+    <s:VGroup gap="10"
+              paddingLeft="15" paddingRight="15" paddingTop="15" paddingBottom="15"
+              horizontalAlign="center">
+        <s:Label text="Выберите группу"/>
+        <s:Line width="100%" displayObjectSharingMode="usesSharedObject">
+            <s:stroke>
+                <s:SolidColorStroke color="#CCCCCC"/>
+            </s:stroke>
+        </s:Line>
+        <s:Scroller id="m_WallScroller" x="20" y="10" maxHeight="500">
+            <s:VGroup id="box" gap="1"/>
+        </s:Scroller>
+    </s:VGroup>
+
+
+    <fx:Script><![CDATA[
+        import data.vo.post.PostVO;
+
+        private var groupItems:Vector.<GroupWIndowItem> = new Vector.<GroupWIndowItem>();
+
+
+        public function show(post:PostVO):void {
+            this.visible = true;
+            setPost(post);
+        }
+
+        public function setPost(post:PostVO):void {
+            for (var i:uint = 0; i < groupItems.length; i++) {
+                groupItems[i].setPost(post);
+            }
+        }
+
+        public function setFriends(arr:Array):void {
+            //arr = arr.sort(sortFunc);
+            box.removeAllElements();
+            for (var i:uint = 0; i < arr.length; i++) {
+                var item:GroupWIndowItem = new GroupWIndowItem();
+                box.addElement(item);
+                item.setGroup(arr[i]);
+                groupItems.push(item);
+            }
+        }
+
+        private function close():void {
+            visible = false;
+        }
+        ]]></fx:Script>
+
+
+</s:BorderContainer>

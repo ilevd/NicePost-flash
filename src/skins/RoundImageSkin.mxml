@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<s:Skin xmlns:fx="http://ns.adobe.com/mxml/2009"
+        xmlns:s="library://ns.adobe.com/flex/spark">
+
+    <!-- To change this template use File | Settings | File Templates. -->
+
+
+    <fx:Metadata>[HostComponent("spark.components.Image")]</fx:Metadata>
+
+    <fx:Script>
+		<![CDATA[
+        import mx.events.FlexEvent;
+        import mx.events.ResizeEvent;
+
+        private var cornerRadius:Number = 10;
+
+        override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number) : void
+        {
+            var cr:Number = getStyle("cornerRadius");
+
+            if (cornerRadius != cr)
+            {
+                cornerRadius = cr;
+                background.radiusX = cornerRadius;
+                bmpMask.setStyle("cornerRadius", cornerRadius);
+            }
+
+            super.updateDisplayList(unscaledWidth, unscaledHeight);
+        }
+        ]]>
+	</fx:Script>
+
+    <s:states>
+        <s:State name="uninitialized" />
+        <s:State name="loading"/>
+        <s:State name="ready" />
+        <s:State name="invalid" />
+        <s:State name="disabled" />
+    </s:states>
+
+    <!--- This mask doesn't seem to be working on the image -->
+    <s:Rect id="background" left="0" right="0" top="0" bottom="0" radiusX="10">
+        <s:fill>
+            <s:SolidColor id="bgFill" alpha="1" color="0xFF0000"/>
+        </s:fill>
+        <s:stroke>
+            <s:SolidColorStroke color="0xFF0000" weight="4"/>
+        </s:stroke>
+    </s:Rect>
+
+    <!--- Primary image display skin part. -->
+    <s:BitmapImage id="imageDisplay" left="2" top="2" right="2" bottom="2">
+        <s:mask>
+            <s:BorderContainer id="bmpMask" cornerRadius="10"
+                               width="{imageDisplay.width}" height="{imageDisplay.height}" />
+        </s:mask>
+    </s:BitmapImage>
+
+</s:Skin>

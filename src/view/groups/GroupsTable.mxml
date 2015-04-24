@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+                   xmlns:s="library://ns.adobe.com/flex/spark"
+                   cornerRadius="0"
+
+                   borderVisible="false"
+                   borderColor="0xb4c5d9"
+                   backgroundAlpha="0"
+                   backgroundColor="0xf4f8ff">
+    <!-- To change this template use File | Settings | File Templates. -->
+
+
+    <!--s:filters>
+        <s:DropShadowFilter color="0x555555" distance="2" angle="90" blurX="4" blurY="4" />
+    </s:filters-->
+    <s:HGroup gap="5">
+        <s:Line height="100%" displayObjectSharingMode="usesSharedObject">
+            <s:stroke>
+                <s:SolidColorStroke color="0xEEEEEE"/>
+            </s:stroke>
+        </s:Line>
+        <s:VGroup id="m_Box" width="100%" gap="5" horizontalAlign="center"
+                  paddingTop="0" paddingBottom="0" paddingLeft="0" paddingRight="0"/>
+    </s:HGroup>
+
+
+    <fx:Script><![CDATA[
+        import data.vo.GroupVO;
+
+        private static const MAX_GROUPS_COUNT:uint = 11;
+
+        public function setGroups(groups:Vector.<GroupVO>):void {
+            for (var i:uint = 0; i < groups.length && i < MAX_GROUPS_COUNT; i++) {
+                var group:TopGroupItem = new TopGroupItem();
+                m_Box.addElement(group);
+                group.init(groups[i]);
+            }
+        }
+        ]]></fx:Script>
+
+</s:BorderContainer>

@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+                   xmlns:s="library://ns.adobe.com/flex/spark"
+                   cornerRadius="10"
+                   borderVisible="true" borderColor="0x777777" borderAlpha="0.2"
+                   backgroundColor="0xfbf9f4" backgroundAlpha="1">
+    <!-- To change this template use File | Settings | File Templates. -->
+
+
+    <s:Button id="m_CloseButton" skinClass="skins.CloseButtonSkin" right="10" y="10" click="close();"
+              useHandCursor="true" buttonMode="true" mouseChildren="false"/>
+
+
+    <s:VGroup gap="10"
+              paddingLeft="15" paddingRight="15" paddingTop="15" paddingBottom="15"
+              horizontalAlign="center" >
+
+        <!--s:Label text="Твои друзья еще не полюзуются NicePost" /-->
+        <s:Label text="Совет" />
+        <s:Line width="100%" displayObjectSharingMode="usesSharedObject">
+            <s:stroke>
+                <s:SolidColorStroke color="#CCCCCC"/>
+            </s:stroke>
+        </s:Line>
+        <s:Label text="Добавьте приложение в левою меню, будет намного удобнее!" />
+        <!--s:VGroup>
+            <s:HGroup id="m_Box1"/>
+            <s:HGroup id="m_Box2"/>
+        </s:VGroup-->
+
+        <!--s:Button label="Пригласить друзей"/-->
+        <s:Button label="Добавить" click="addClick();"/>
+    </s:VGroup>
+
+
+
+    <fx:Script><![CDATA[
+        import commands.LeftMenuCommand;
+        import commands.LeftMenuCommand;
+
+        private static const FRIEND_COUNT:uint = 3;
+
+
+        /*public function setFriends(friends:Array):void{
+
+            for(var i:uint = 0; i < FRIEND_COUNT; i++){
+                var f:FriendInviteItem = new FriendInviteItem();
+                 m_Box1.addElement(f);
+                f.setFriend(friends[i]);
+            }
+            for(i = 0; i < FRIEND_COUNT; i++){
+                var f:FriendInviteItem = new FriendInviteItem();
+                m_Box2.addElement(f);
+                f.setFriend(friends[i]);
+            }
+        } */
+
+        public function show():void{
+            visible = true;
+        }
+
+        private function addClick():void{
+            var c:LeftMenuCommand = new LeftMenuCommand();
+            c.addToMenu();
+        }
+
+        private function close():void{
+            visible = false;
+        }
+
+        ]]></fx:Script>
+
+
+
+</s:BorderContainer>

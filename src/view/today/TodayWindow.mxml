@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+                   xmlns:s="library://ns.adobe.com/flex/spark" xmlns:controller="view.mediator.*"
+                   cornerRadius="10"
+                   borderVisible="true" borderColor="0x777777" borderAlpha="0.2"
+                   backgroundColor="0xfbf9f4" backgroundAlpha="1"
+        >
+
+
+    <fx:Declarations>
+        <controller:PostMediator id="_postController"/>
+    </fx:Declarations>
+
+
+    <s:filters>
+        <s:GlowFilter id="m_Filter" strength="1"  color="0x555555" blurX="10" blurY="10"/>
+    </s:filters>
+
+
+    <s:Button id="m_CloseButton" skinClass="skins.CloseButtonSkin" right="10" y="10" click="close();"
+              useHandCursor="true" buttonMode="true" mouseChildren="false"/>
+
+
+
+
+
+
+    <s:VGroup gap="10" minWidth="400"
+              paddingLeft="15" paddingRight="15" paddingTop="15" paddingBottom="15"
+              horizontalAlign="center">
+        <s:Label id="m_TitleLabel" text="Сегодня" fontSize="18"/>
+        <s:Line width="100%" displayObjectSharingMode="usesSharedObject">
+            <s:stroke>
+                <s:SolidColorStroke color="0xCCCCCC"/>
+            </s:stroke>
+        </s:Line>
+
+        <s:VGroup id="m_Box" width="100%" height="100%" verticalAlign="middle" gap="5"/>
+
+        <s:HGroup id="m_InfoGroup" visible="true" verticalAlign="middle" horizontalAlign="center"
+                  gap="15" paddingLeft="2"  height="20"  width="100%"  >
+
+
+            <s:Label id="m_Go" text="На стену!" color="0x435977" fontSize="12"
+                     rollOver="Utils.rollOver(m_Go);" rollOut="Utils.rollOut(m_Go)"
+                     useHandCursor="true" buttonMode="true" mouseChildren="false"
+                     click="repostClick();" />
+
+            <s:Label id="m_ToFriend" text="Другу!" color="0x435977" fontSize="12"
+                     rollOver="Utils.rollOver(m_ToFriend);" rollOut="Utils.rollOut(m_ToFriend)"
+                     useHandCursor="true" buttonMode="true" mouseChildren="false"
+                     click="repostFriendClick();"/>
+
+            <s:Label id="m_ToGroup" text="В группу!" color="0x435977" fontSize="12"
+                     rollOver="Utils.rollOver(m_ToGroup);" rollOut="Utils.rollOut(m_ToGroup)"
+                     useHandCursor="true" buttonMode="true" mouseChildren="false"
+                     click="repostGroupClick();"/>
+
+        </s:HGroup>
+
+
+
+    </s:VGroup>
+
+
+
+    <fx:Script><![CDATA[
+        import data.TodayData;
+        import data.vo.post.PostVO;
+
+        import utils.Utils;
+
+        private var todayArr:Array;
+
+        public function show():void{
+            visible = true;
+            m_TitleLabel.text = "Сегодня, " + Utils.getDate() + ":";
+            todayArr = TodayData.getArr(new Date().getMonth(), new Date().getDate());
+            if( todayArr == null){
+                close();
+                return;
+            }
+            for( var i:uint= 0; i < todayArr.length; i++){
+                var item:TodayItem = new TodayItem();
+                m_Box.addElement(item);
+                item.setItem(todayArr[i]);
+            }
+        }
+
+        private function getPost():PostVO{
+            var p:PostVO = new PostVO();
+            p.text = m_TitleLabel.text + "\n\n";
+            for( var i:uint = 0; i < todayArr.length; i++){
+                p.text += "&#10004; " + todayArr[i] + "\n";
+            }
+            return p;
+        }
+
+        public function close():void{
+            visible = false;
+        }
+
+
+        public function repostClick():void {
+            _postController.postSelfClick(getPost());
+        }
+
+        public function repostFriendClick():void {
+            _postController.postFriendClick(getPost());
+        }
+
+        public function repostGroupClick():void {
+            _postController.postGroupClick(getPost());
+        }
+
+
+
+        ]]></fx:Script>
+
+
+</s:BorderContainer>

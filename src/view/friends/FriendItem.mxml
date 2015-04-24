@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+                   xmlns:s="library://ns.adobe.com/flex/spark" xmlns:controller="view.mediator.*"
+                   height="22"
+                   rollOut="rollOut()" rollOver="rollOver();" click="click();"
+                   backgroundAlpha="0.3"
+                   borderVisible="false" borderColor="0xAAAAAA"
+                   useHandCursor="true" buttonMode="true" mouseChildren="false">
+
+    <!-- To change this template use File | Settings | File Templates. -->
+
+    <fx:Declarations>
+        <controller:FriendItemMediator id="friendItemMediator"/>
+    </fx:Declarations>
+
+    <s:Label id="_fio" width="150" x="5" maxDisplayedLines="1" verticalCenter="0"/>
+
+
+    <fx:Script><![CDATA[
+        import data.vo.post.PostVO;
+
+        private var friend:Object;
+        private var post:PostVO;
+
+
+        public function setFriend(friend:Object):void {
+            this.friend = friend;
+            _fio.text = friend.last_name + " " + friend.first_name;
+        }
+
+        public function setPost(post:PostVO):void {
+            this.post = post;
+        }
+
+        private function rollOver():void {
+            setStyle("backgroundColor", 0x00FF9A);
+        }
+
+        private function rollOut():void {
+            setStyle("backgroundColor", 0xFFFFFF);
+        }
+
+        private function click():void {
+            friendItemMediator.click(friend.uid, post);
+        }
+        ]]></fx:Script>
+
+</s:BorderContainer>

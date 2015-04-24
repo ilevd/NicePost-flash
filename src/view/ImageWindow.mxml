@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+                   xmlns:s="library://ns.adobe.com/flex/spark" xmlns:controller="view.mediator.*"
+
+                   cornerRadius="10"
+                   borderVisible="true" borderColor="0x777777" borderAlpha="0.2"
+                   backgroundColor="0xfbf9f4" backgroundAlpha="1"
+        >
+
+    <fx:Declarations>
+        <controller:PostMediator id="_postController"/>
+    </fx:Declarations>
+
+
+    <s:filters>
+        <s:GlowFilter id="m_Filter" color="0x555555" blurX="4" blurY="4"/>
+    </s:filters>
+
+
+    <!--s:layout>
+        <s:VerticalLayout  gap="10"
+                           paddingLeft="15" paddingRight="15" paddingTop="15" paddingBottom="15"
+                           horizontalAlign="center"/>
+    </s:layout-->
+
+    <s:Button id="m_CloseButton" skinClass="skins.CloseButtonSkin" right="10" y="10" click="close();"
+              useHandCursor="true" buttonMode="true" mouseChildren="false"/>
+
+    <s:VGroup paddingBottom="10" paddingTop="30" paddingLeft="10" paddingRight="10" horizontalAlign="center" >
+
+        <s:Image id="m_Img" smooth="true" complete="httpStatus(event);" click="nextClick();" />
+
+
+        <s:BorderContainer id="m_InfoGroup" visible="true"
+                           backgroundColor="0xFFFFFF" backgroundAlpha="1"
+                           borderVisible="false" height="18" >
+            <s:layout>
+                <s:HorizontalLayout gap="15" paddingLeft="5" verticalAlign="middle">
+
+                </s:HorizontalLayout>
+            </s:layout>
+
+
+            <s:HGroup gap="2" width="60" verticalAlign="middle" horizontalAlign="left" height="100%">
+                <s:Image source="{ResManager.LIKE_ICON}" smooth="true" alpha="0.9" />
+                <s:Label id="m_LikeLabel" color="0x435977" fontFamily="Tahoma" fontWeight="bold" fontSize="12"
+                         toolTip="лайков"
+                         rollOver="Utils.rollOver(m_LikeLabel);" rollOut="Utils.rollOut(m_LikeLabel)"
+                         useHandCursor="true" buttonMode="true" mouseChildren="false"
+                         click="repostClick();"/>
+                <!--s:Label id="m_ShareLabel" color="0xbababa" fontFamily="Tahoma" fontSize="10"
+                         toolTip="репостов"/-->
+                <!--s:Spacer width="2"/>
+                <s:Image source="{ResManager.SHARE_ICON}" visible="false"/-->
+
+            </s:HGroup>
+
+
+            <s:Label id="m_Go" text="На стену!" color="0x435977" fontSize="12"
+                     rollOver="Utils.rollOver(m_Go);" rollOut="Utils.rollOut(m_Go)"
+                     useHandCursor="true" buttonMode="true" mouseChildren="false"
+                     click="repostClick();" />
+
+            <s:Label id="m_ToFriend" text="Другу!" color="0x435977" fontSize="12"
+                     rollOver="Utils.rollOver(m_ToFriend);" rollOut="Utils.rollOut(m_ToFriend)"
+                     useHandCursor="true" buttonMode="true" mouseChildren="false"
+                     click="repostFriendClick();"/>
+
+            <s:Label id="m_ToGroup" text="В группу!" color="0x435977" fontSize="12"
+                     rollOver="Utils.rollOver(m_ToGroup);" rollOut="Utils.rollOut(m_ToGroup)"
+                     useHandCursor="true" buttonMode="true" mouseChildren="false"
+                     click="repostGroupClick();"/>
+
+            <s:Label id="m_Date" color="0x9ca0a3" fontSize="10" width="100%" textAlign="right" maxDisplayedLines="1"/>
+            <!--s:Label id="m_DoPost" text="Перейти к записи" color="0x435977" fontSize="11"
+                     rollOver="Utils.rollOver(m_DoPost);" rollOut="Utils.rollOut(m_DoPost)"
+                     useHandCursor="true" buttonMode="true" mouseChildren="false"
+                     click="navigateClick();"/-->
+
+
+        </s:BorderContainer>
+
+
+    </s:VGroup>
+
+
+    <fx:Script><![CDATA[
+        import data.vo.post.PostVO;
+
+        import utils.Utils;
+
+        private var post:PostVO;
+
+
+        private var curIndex:int;
+
+        public function show(src:String, post:PostVO, curIndex:uint = 0):void{
+            visible = true;
+            setPost(src, post, curIndex);
+        }
+
+        public function setPost(src:String, post:PostVO, curIndex:uint = 0):void{
+            m_Img.source = src;
+            m_Img.buttonMode = m_Img.useHandCursor = (post.photos.length > 1);
+            m_LikeLabel.text = post.likes.count.toString();
+            m_Date.text = Utils.unixTimeToStr(post.date);
+            this.curIndex = curIndex;
+            this.post = post;
+        }
+
+
+        private function httpStatus(e:Event):void{
+            trace("htttStatus: " + stage.stageWidth + " " + width);
+            this.x = -10 + (stage.stageWidth - (m_Img.sourceWidth < 300 ? 300 : m_Img.sourceWidth)) /2;
+            this.y = -30 + (stage.stageHeight - m_Img.sourceHeight) /2;
+        }
+
+        private function nextClick():void{
+            if( post.photos.length > 1){
+                curIndex = (curIndex + 1) % post.photos.length;
+                m_Img.source = post.photos[curIndex].photo_604;
+            }
+        }
+
+        private function close():void{
+            visible = false;
+        }
+
+
+        public function repostClick():void {
+            _postController.postSelfClick(post);
+        }
+
+        public function repostFriendClick():void {
+            _postController.postFriendClick(post);
+        }
+
+        public function repostGroupClick():void {
+            _postController.postGroupClick(post);
+        }
+
+
+        ]]></fx:Script>
+
+
+</s:BorderContainer>

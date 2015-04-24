@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+                   xmlns:s="library://ns.adobe.com/flex/spark"
+                   xmlns:mx="library://ns.adobe.com/flex/mx"
+                   xmlns:controller="view.mediator.*"
+                   borderVisible="false" backgroundAlpha="0"
+                   height="40"
+                   creationComplete="creation();"
+        >
+   <fx:Declarations>
+       <controller:MenuMediator id="_menuController"/>
+   </fx:Declarations>
+
+    <!--s:filters>
+        <s:GlowFilter id="m_Filter" color="0x999999" blurX="4" blurY="4"/>
+    </s:filters-->
+
+
+    <!--mx:ToggleButtonBar id="m_MainMenu" top="0" height="40" buttonWidth="80" horizontalCenter="0"
+                        firstButtonStyleName="ratingLeftMenuButton" buttonStyleName="ratingMenuButton"
+                        lastButtonStyleName="ratingRightMenuButton"
+                        fontSize="14" horizontalGap="-5" itemClick="menuClick( event.index );"
+                        buttonMode="true" useHandCursor="true">
+
+        <mx:dataProvider>
+            <fx:Object label="Юмор"/>
+            <fx:Object label="Любовь"/>
+            <fx:Object label="Новости"/>
+            <fx:Object label="Картинки"/>
+            <fx:Object label="Умное"/>
+            <fx:Object label="Музыка"/>
+            <fx:Object label="Спорт"/>
+            <fx:Object label="Игры"/>
+            <fx:Object label="Авто"/>
+            <fx:Object label="Рецепты"/>
+            <fx:Object label="Мои"/>
+        </mx:dataProvider>
+    </mx:ToggleButtonBar-->
+
+    <s:VGroup gap="2">
+        <s:HGroup id="m_Box1" gap="2" />
+        <s:HGroup id="m_Box2" gap="2" />
+    </s:VGroup>
+
+
+    <fx:Script><![CDATA[
+        import data.TopGroups;
+        import data.TopGroups;
+        import data.TopGroups;
+
+        import mx.core.FlexGlobals;
+
+        import data.vo.GroupVO;
+
+        import spark.components.HGroup;
+
+
+        private var menuItems:Vector.<MenuItem>;
+
+        private function creation():void{
+            menuItems = new Vector.<MenuItem>();
+            for (var i:uint = 0; i < TopGroups.MENU_NAMES.length; i++){
+                var mi:MenuItem = new MenuItem();
+                var box:HGroup = i < (TopGroups.MENU_NAMES.length /2)? m_Box1 : m_Box2;
+                box.addElement(mi);
+                mi.init(TopGroups.MENU_NAMES[i], i);
+                mi.addEventListener(MouseEvent.CLICK, menuClick);
+                menuItems.push(mi);
+            }
+            menuItems[0].select();
+        }
+
+        private function menuClick(e:MouseEvent):void {
+            deselectAll();
+            var mi:MenuItem = e.currentTarget as MenuItem;
+            mi.select();
+            _menuController.menuClick(mi.getIndex());
+        }
+
+        private function deselectAll():void{
+            for each(var mi:MenuItem in menuItems){
+                mi.deselect();
+            }
+        }
+
+        ]]></fx:Script>
+
+
+</s:BorderContainer>

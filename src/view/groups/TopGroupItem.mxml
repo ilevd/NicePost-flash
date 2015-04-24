@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+                   xmlns:s="library://ns.adobe.com/flex/spark" xmlns:controller="view.mediator.*"
+                   click="click();"
+                   buttonMode="true" useHandCursor="true"
+                   borderVisible="false" borderColor="0xE4F1FF"
+                   backgroundAlpha="0" backgroundColor="0xE4F1FF"
+                   width="50" height="50"
+
+
+        >
+    <!-- To change this template use File | Settings | File Templates. -->
+
+
+
+    <fx:Declarations>
+        <controller:GroupMediator id="_groupController"/>
+        <s:Scale id="m_ScaleEffect1" scaleXTo="1.08" scaleYTo="1.08" duration="50" autoCenterTransform="true"/>
+        <s:Scale id="m_ScaleEffect2" scaleXTo="1" scaleYTo="1" duration="50" autoCenterTransform="true"/>
+        <s:GlowFilter id="m_Filter" color="0x00FF00"  blurX="4" blurY="4"/>
+    </fx:Declarations>
+
+    <!--s:filters>
+
+    </s:filters-->
+
+    <!--s:BorderContainer id="m_Border" visible="false"
+                       borderVisible="true" borderColor="0xE4F1FF"
+                       backgroundAlpha="1"  backgroundColor="0xE4F1FF"
+                       cornerRadius="2"
+                       width="50" height="50"/-->
+
+
+    <s:Image id="m_Img" width="44" height="44" smooth="true" horizontalCenter="0"
+             verticalCenter="0"
+             rollOver="m_ScaleEffect1.play([m_Img]);"
+             rollOut="m_ScaleEffect2.play([m_Img]);"/>
+
+
+    <fx:Script><![CDATA[
+        import mx.core.FlexGlobals;
+
+        import spark.filters.GlowFilter;
+
+        import data.vo.GroupVO;
+
+        private var group:GroupVO;
+
+        public function init(group:GroupVO):void {
+            this.group = group;
+            m_Img.source = group.photo_50;
+            this.toolTip = group.name; // + " | " + group.screen_name ;
+        }
+
+        private function click():void {
+            m_Img.scaleX = m_Img.scaleY = 1;
+            //var groupID:String = "-" + group.id.toString();
+            //trace("GroupItem click: groupID: " + groupID);
+            _groupController.click(group);
+            select();
+        }
+
+        public function select():void {
+            setStyle("backgroundAlpha", 1);
+            //m_Border.visible = true;
+            //filters = [m_Filter];
+            //setStyle("borderColor", 0x888888);
+        }
+
+
+        public function deselect():void {
+            setStyle("backgroundAlpha", 0);
+            //m_Border.visible = false;
+            //filters = [];
+            //setStyle("borderColor", 0xDDDDDD);
+        }
+        ]]></fx:Script>
+
+</s:BorderContainer>

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+                   xmlns:s="library://ns.adobe.com/flex/spark"
+                   width="380" height="40"
+        borderVisible="false">
+    <!-- To change this template use File | Settings | File Templates. -->
+
+    <s:layout>
+        <s:HorizontalLayout horizontalAlign="center" verticalAlign="middle"
+                paddingLeft="10" paddingRight="10"/>
+    </s:layout>
+
+
+    <s:Image source="{ResManager.GALKA_IMG}"/>
+    <s:Label id="m_Label" width="330"/>
+
+
+    <fx:Script><![CDATA[
+
+
+        public function setItem(s:String):void{
+            m_Label.text = s;
+        }
+
+        ]]></fx:Script>
+
+
+</s:BorderContainer>
